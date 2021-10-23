@@ -2,6 +2,8 @@
 
 Expense checker Flutter application.
 
+Re-coded with [Maximilian udemy course](https://www.udemy.com/course/learn-flutter-dart-to-build-ios-android-apps/)
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
