@@ -29,7 +29,7 @@ class Chart extends StatelessWidget {
         'day': DateFormat.E().format(weekDay),
         'amount': totalAmount,
       };
-    });
+    }).reversed.toList();
   }
 
   double get maxAmount {
