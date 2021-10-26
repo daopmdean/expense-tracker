@@ -1,3 +1,4 @@
+import 'package:expense_tracker/constants.dart';
 import 'package:expense_tracker/models/transaction.dart';
 import 'package:expense_tracker/widgets/chart.dart';
 import 'package:expense_tracker/widgets/new_transaction.dart';
@@ -14,30 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-        accentColor: Colors.greenAccent,
-        fontFamily: 'Quicksand',
-        textTheme: ThemeData.light().textTheme.copyWith(
-              headline6: TextStyle(
-                fontFamily: 'OpenSans',
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
-              button: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-        appBarTheme: AppBarTheme(
-          textTheme: ThemeData.light().textTheme.copyWith(
-                headline6: TextStyle(
-                  fontFamily: 'OpenSans',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
-              ),
-        ),
-      ),
+      theme: appTheme,
       home: MyHomePage(),
     );
   }
@@ -145,13 +123,13 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void _newTransaction(String title, double amount) {
+  void _newTransaction(String title, double amount, DateTime dateTime) {
     var uuid = Uuid();
     var transaction = Transaction(
       id: uuid.v1(),
       title: title,
       amount: amount,
-      date: DateTime.now(),
+      date: dateTime,
     );
 
     setState(() {

@@ -15,65 +15,6 @@ class _NewTransactionState extends State<NewTransaction> {
   final amountController = TextEditingController();
   DateTime selectedDate;
 
-  void _submit() {
-    var enteredTitle = titleController.text;
-    var enteredAmount = double.tryParse(amountController.text);
-
-    if (enteredAmount == null) {
-      return;
-    }
-
-    if (enteredTitle.isEmpty || enteredAmount <= 0) {
-      return;
-    }
-
-    widget.addTransaction(
-      enteredTitle,
-      enteredAmount,
-    );
-
-    Navigator.of(context).pop();
-  }
-
-  void _showDatePicker() {
-    showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2015),
-      lastDate: DateTime.now(),
-    ).then((pickedDate) {
-      if (pickedDate == null) {
-        return;
-      }
-      if (selectedDate != null) {
-        selectedDate = pickedDate.add(Duration(
-          hours: selectedDate.hour,
-          minutes: selectedDate.minute,
-        ));
-        _showTimePicker();
-        return;
-      }
-      selectedDate = pickedDate;
-      _showTimePicker();
-    });
-  }
-
-  void _showTimePicker() {
-    showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    ).then((pickedTime) {
-      setState(() {
-        if (pickedTime == null) {
-          return;
-        }
-        selectedDate = selectedDate.add(
-          Duration(hours: pickedTime.hour, minutes: pickedTime.minute),
-        );
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -130,5 +71,69 @@ class _NewTransactionState extends State<NewTransaction> {
         ),
       ),
     );
+  }
+
+  void _submit() {
+    var enteredTitle = titleController.text;
+    var enteredAmount = double.tryParse(amountController.text);
+
+    if (enteredAmount == null) {
+      return;
+    }
+
+    if (selectedDate == null) {
+      return;
+    }
+
+    if (enteredTitle.isEmpty || enteredAmount <= 0) {
+      return;
+    }
+
+    widget.addTransaction(
+      enteredTitle,
+      enteredAmount,
+      selectedDate,
+    );
+
+    Navigator.of(context).pop();
+  }
+
+  void _showDatePicker() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2015),
+      lastDate: DateTime.now(),
+    ).then((pickedDate) {
+      if (pickedDate == null) {
+        return;
+      }
+      if (selectedDate != null) {
+        selectedDate = pickedDate.add(Duration(
+          hours: selectedDate.hour,
+          minutes: selectedDate.minute,
+        ));
+        _showTimePicker();
+        return;
+      }
+      selectedDate = pickedDate;
+      _showTimePicker();
+    });
+  }
+
+  void _showTimePicker() {
+    showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    ).then((pickedTime) {
+      setState(() {
+        if (pickedTime == null) {
+          return;
+        }
+        selectedDate = selectedDate.add(
+          Duration(hours: pickedTime.hour, minutes: pickedTime.minute),
+        );
+      });
+    });
   }
 }
