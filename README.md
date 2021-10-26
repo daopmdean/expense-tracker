@@ -18,6 +18,6 @@ For help getting started with Flutter, view our
 samples, guidance on mobile development, and a full API reference.
 
 <p float="left">
-  <img src="./assets/images/ScreenShot-iPhone13_1.png" width="100" />
-  <img src="./assets/images/ScreenShot-iPhone13_2.png" width="100" />
+  <img src="./assets/images/ScreenShot-iPhone13_1.png" width="300" />
+  <img src="./assets/images/ScreenShot-iPhone13_2.png" width="300" />
 </p>
