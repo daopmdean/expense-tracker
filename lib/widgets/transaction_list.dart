@@ -1,14 +1,15 @@
-import 'package:expense_tracker/constants.dart';
 import 'package:expense_tracker/models/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
+  final Function deleteFunc;
 
   const TransactionList({
     Key key,
     this.transactions,
+    this.deleteFunc,
   }) : super(key: key);
 
   @override
@@ -53,6 +54,10 @@ class TransactionList extends StatelessWidget {
                     ),
                     subtitle: Text(
                       DateFormat().format(transactions[index].date),
+                    ),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () => deleteFunc(index),
                     ),
                   ),
                 );

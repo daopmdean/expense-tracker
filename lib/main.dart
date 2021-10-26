@@ -103,6 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           TransactionList(
             transactions: _transactions,
+            deleteFunc: _deleteTransaction,
           ),
         ],
       ),
@@ -134,6 +135,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
     setState(() {
       _transactions.add(transaction);
+    });
+  }
+
+  void _deleteTransaction(int index) {
+    setState(() {
+      _transactions.removeAt(index);
     });
   }
 }
