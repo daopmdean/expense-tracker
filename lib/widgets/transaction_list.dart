@@ -57,7 +57,7 @@ class TransactionList extends StatelessWidget {
                     ),
                     trailing: IconButton(
                       icon: Icon(Icons.delete),
-                      onPressed: () => deleteFunc(index),
+                      onPressed: () => deleteFunc(transactions[index].id),
                     ),
                   ),
                 );
