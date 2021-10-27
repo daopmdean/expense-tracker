@@ -27,44 +27,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _transactions = [
-    Transaction(
-      id: '1',
-      title: 'Food',
-      amount: 12.45,
-      date: DateTime.now().subtract(Duration(days: 1)),
-    ),
-    Transaction(
-      id: '2',
-      title: 'Drink',
-      amount: 4.2,
-      date: DateTime.now().subtract(Duration(days: 2)),
-    ),
-    Transaction(
-      id: '3',
-      title: 'Cloth',
-      amount: 8.99,
-      date: DateTime.now().subtract(Duration(days: 3)),
-    ),
-    Transaction(
-      id: '4',
-      title: 'Book',
-      amount: 35.49,
-      date: DateTime.now().subtract(Duration(days: 4)),
-    ),
-    Transaction(
-      id: '5',
-      title: 'Pen',
-      amount: 12,
-      date: DateTime.now().subtract(Duration(days: 5)),
-    ),
-    Transaction(
-      id: '6',
-      title: 'Phone',
-      amount: 45.99,
-      date: DateTime.now().subtract(Duration(days: 6)),
-    ),
-  ];
+  final List<Transaction> _transactions = transactions;
 
   List<Transaction> get _recentTransactions {
     return _transactions
@@ -80,30 +43,40 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Expense Tracker',
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => startNewTransaction(context),
-          ),
-        ],
+    var appBar = AppBar(
+      title: Text(
+        'Expense Tracker',
       ),
+      actions: [
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => startNewTransaction(context),
+        ),
+      ],
+    );
+
+    var appHeight = (MediaQuery.of(context).size.height -
+        appBar.preferredSize.height -
+        MediaQuery.of(context).padding.top);
+
+    return Scaffold(
+      appBar: appBar,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Container(
+            height: appHeight * 0.3,
             width: double.infinity,
             child: Chart(
               recentTransactions: _recentTransactions,
             ),
           ),
-          TransactionList(
-            transactions: _transactions,
-            deleteFunc: _deleteTransaction,
+          Container(
+            height: appHeight * 0.7,
+            child: TransactionList(
+              transactions: _transactions,
+              deleteFunc: _deleteTransaction,
+            ),
           ),
         ],
       ),
