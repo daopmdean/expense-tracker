@@ -28,6 +28,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transactions = transactions;
+  bool _showChart = false;
 
   List<Transaction> get _recentTransactions {
     return _transactions
@@ -43,6 +44,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
     var appBar = AppBar(
       title: Text(
         'Expense Tracker',
@@ -55,29 +59,56 @@ class _MyHomePageState extends State<MyHomePage> {
       ],
     );
 
-    var appHeight = (MediaQuery.of(context).size.height -
+    var appHeight = MediaQuery.of(context).size.height -
         appBar.preferredSize.height -
-        MediaQuery.of(context).padding.top);
+        MediaQuery.of(context).padding.top;
+
+    var listTxsWidget = Container(
+      height: appHeight * 0.75,
+      child: TransactionList(
+        transactions: _transactions,
+        deleteFunc: _deleteTransaction,
+      ),
+    );
 
     return Scaffold(
       appBar: appBar,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Container(
-            height: appHeight * 0.3,
-            width: double.infinity,
-            child: Chart(
-              recentTransactions: _recentTransactions,
+          if (isLandscape)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Show chart'),
+                Switch(
+                  value: _showChart,
+                  onChanged: (val) {
+                    setState(() {
+                      _showChart = val;
+                    });
+                  },
+                )
+              ],
             ),
-          ),
-          Container(
-            height: appHeight * 0.7,
-            child: TransactionList(
-              transactions: _transactions,
-              deleteFunc: _deleteTransaction,
+          if (isLandscape && _showChart)
+            Container(
+              height: appHeight * 0.6,
+              width: double.infinity,
+              child: Chart(
+                recentTransactions: _recentTransactions,
+              ),
             ),
-          ),
+          if (isLandscape && !_showChart) listTxsWidget,
+          if (!isLandscape)
+            Container(
+              height: appHeight * 0.25,
+              width: double.infinity,
+              child: Chart(
+                recentTransactions: _recentTransactions,
+              ),
+            ),
+          if (!isLandscape) listTxsWidget,
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -91,6 +122,9 @@ class _MyHomePageState extends State<MyHomePage> {
   void startNewTransaction(BuildContext context) {
     showModalBottomSheet(
       context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+      ),
       builder: (_) {
         return NewTransaction(addTransaction: _newTransaction);
       },
