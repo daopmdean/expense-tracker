@@ -14,6 +14,9 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final theme = Theme.of(context);
+
     return transactions.isEmpty
         ? Column(
             children: [
@@ -48,29 +51,29 @@ class TransactionList extends StatelessWidget {
                   ),
                   title: Text(
                     transactions[index].title,
-                    style: Theme.of(context).textTheme.headline6,
+                    style: theme.textTheme.headline6,
                   ),
                   subtitle: Text(
                     DateFormat().format(transactions[index].date),
                   ),
-                  trailing: MediaQuery.of(context).size.width > 400
+                  trailing: mediaQuery.size.width > 400
                       ? TextButton.icon(
                           onPressed: () => deleteFunc(transactions[index].id),
                           icon: Icon(
                             Icons.delete,
-                            color: Theme.of(context).errorColor,
+                            color: theme.errorColor,
                           ),
                           label: Text(
                             'Delete',
                             style: TextStyle(
-                              color: Theme.of(context).errorColor,
+                              color: theme.errorColor,
                             ),
                           ),
                         )
                       : IconButton(
                           onPressed: () => deleteFunc(transactions[index].id),
                           icon: Icon(Icons.delete),
-                          color: Theme.of(context).errorColor,
+                          color: theme.errorColor,
                         ),
                 ),
               );

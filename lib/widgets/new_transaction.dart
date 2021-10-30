@@ -17,6 +17,9 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final theme = Theme.of(context);
+
     return SingleChildScrollView(
       child: Card(
         elevation: 5,
@@ -25,7 +28,7 @@ class _NewTransactionState extends State<NewTransaction> {
             left: 10,
             top: 10,
             right: 10,
-            bottom: MediaQuery.of(context).viewInsets.bottom,
+            bottom: mediaQuery.viewInsets.bottom,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -60,7 +63,7 @@ class _NewTransactionState extends State<NewTransaction> {
                         ),
                       ),
                       style: TextButton.styleFrom(
-                        primary: Theme.of(context).primaryColor,
+                        primary: theme.primaryColor,
                       ),
                     ),
                   ],
@@ -70,7 +73,7 @@ class _NewTransactionState extends State<NewTransaction> {
                 onPressed: _submit,
                 child: Text('Add'),
                 style: TextButton.styleFrom(
-                  primary: Theme.of(context).textTheme.button.color,
+                  primary: theme.textTheme.button.color,
                 ),
               )
             ],
@@ -84,14 +87,9 @@ class _NewTransactionState extends State<NewTransaction> {
     var enteredTitle = titleController.text;
     var enteredAmount = double.tryParse(amountController.text);
 
-    if (enteredAmount == null) {
+    if (enteredAmount == null || selectedDate == null) {
       return;
     }
-
-    if (selectedDate == null) {
-      return;
-    }
-
     if (enteredTitle.isEmpty || enteredAmount <= 0) {
       return;
     }
@@ -101,7 +99,6 @@ class _NewTransactionState extends State<NewTransaction> {
       enteredAmount,
       selectedDate,
     );
-
     Navigator.of(context).pop();
   }
 

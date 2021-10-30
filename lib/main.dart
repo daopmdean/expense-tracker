@@ -44,10 +44,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    bool isLandscape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
+    final mediaQuery = MediaQuery.of(context);
+    bool isLandscape = mediaQuery.orientation == Orientation.landscape;
 
-    var appBar = AppBar(
+    final appBar = AppBar(
       title: Text(
         'Expense Tracker',
       ),
@@ -59,11 +59,11 @@ class _MyHomePageState extends State<MyHomePage> {
       ],
     );
 
-    var appHeight = MediaQuery.of(context).size.height -
+    final appHeight = mediaQuery.size.height -
         appBar.preferredSize.height -
-        MediaQuery.of(context).padding.top;
+        mediaQuery.padding.top;
 
-    var listTxsWidget = Container(
+    final listTxsWidget = Container(
       height: appHeight * 0.75,
       child: TransactionList(
         transactions: _transactions,
