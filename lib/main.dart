@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:expense_tracker/constants.dart';
 import 'package:expense_tracker/models/transaction.dart';
 import 'package:expense_tracker/widgets/chart.dart';
@@ -81,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text('Show chart'),
-                Switch(
+                Switch.adaptive(
                   value: _showChart,
                   onChanged: (val) {
                     setState(() {
@@ -112,10 +114,12 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => startNewTransaction(context),
-      ),
+      floatingActionButton: Platform.isAndroid
+          ? FloatingActionButton(
+              child: Icon(Icons.add),
+              onPressed: () => startNewTransaction(context),
+            )
+          : Container(),
     );
   }
 
