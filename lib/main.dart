@@ -5,6 +5,7 @@ import 'package:expense_tracker/models/transaction.dart';
 import 'package:expense_tracker/widgets/chart.dart';
 import 'package:expense_tracker/widgets/new_transaction.dart';
 import 'package:expense_tracker/widgets/transaction_list.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
@@ -49,40 +50,52 @@ class _MyHomePageState extends State<MyHomePage> {
     final mediaQuery = MediaQuery.of(context);
     bool isLandscape = mediaQuery.orientation == Orientation.landscape;
 
-    final appBar = AppBar(
-      title: Text(
-        'Expense Tracker',
-      ),
-      actions: [
-        IconButton(
-          icon: Icon(Icons.add),
-          onPressed: () => startNewTransaction(context),
-        ),
-      ],
-    );
+    final PreferredSizeWidget appBar = Platform.isAndroid
+        ? AppBar(
+            title: Text(
+              'Expense Tracker',
+            ),
+            actions: [
+              IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () => startNewTransaction(context),
+              ),
+            ],
+          )
+        : CupertinoNavigationBar(
+            middle: Text(
+              'Expense Tracker',
+            ),
+            trailing: GestureDetector(
+              child: Icon(Icons.add),
+              onTap: () => startNewTransaction(context),
+            ),
+          );
 
     final appHeight = mediaQuery.size.height -
         appBar.preferredSize.height -
         mediaQuery.padding.top;
 
     final listTxsWidget = Container(
-      height: appHeight * 0.75,
+      height: appHeight * 0.7,
       child: TransactionList(
         transactions: _transactions,
         deleteFunc: _deleteTransaction,
       ),
     );
 
-    return Scaffold(
-      appBar: appBar,
-      body: Column(
+    final bodyContent = SafeArea(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           if (isLandscape)
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Show chart'),
+                Text(
+                  'Show chart',
+                  style: Theme.of(context).textTheme.headline6,
+                ),
                 Switch.adaptive(
                   value: _showChart,
                   onChanged: (val) {
@@ -113,14 +126,25 @@ class _MyHomePageState extends State<MyHomePage> {
           if (!isLandscape) listTxsWidget,
         ],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Platform.isAndroid
-          ? FloatingActionButton(
-              child: Icon(Icons.add),
-              onPressed: () => startNewTransaction(context),
-            )
-          : Container(),
     );
+
+    return Platform.isAndroid
+        ? Scaffold(
+            appBar: appBar,
+            body: bodyContent,
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+            floatingActionButton: Platform.isAndroid
+                ? FloatingActionButton(
+                    child: Icon(Icons.add),
+                    onPressed: () => startNewTransaction(context),
+                  )
+                : Container(),
+          )
+        : CupertinoPageScaffold(
+            child: bodyContent,
+            navigationBar: appBar,
+          );
   }
 
   void startNewTransaction(BuildContext context) {
